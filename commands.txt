@@ -1,0 +1,210 @@
+written by:Space_Voyager30
+
+
+DIN go's to MOSI
+CLK go's to SCK
+
+start
+lcd (lcd var name) (reset pin(RST),chip selection pin(CE),data/commands selection(DC))
+
+e.g. lcd Display(3,4,5);
+
+
+(lcd var name).clearLcd();
+clears  all pixels stored inside the arduino.dosen't clear lcd, to do that do "(lcd var name).clearLcd();" then "(lcd var name).drawLcd();"
+
+e.g. Display.clearLcd();
+
+
+(lcd var name).drawLcd();
+draws all pixels stored inside the arduino to the lcd. All other draw and set functions only affect the array of pixels and not the lcd
+
+e.g. Display.drawLcd();
+
+
+(lcd var name).LcdDo(char data,bool command);
+set data or commands to the lcd. look at https://www.sparkfun.com/datasheets/LCD/Monochrome/Nokia5110.pdf for details
+
+
+(lcd var name).setPixel(int x,int y,bool on);
+sets a pixel at (x,y) on or off
+
+e.g. Display.setPixel(10,10,true);
+
+
+(lcd var name).drawLine(int x1,int y1,int x2,int y2,bool on);
+draws a line between (x1,y1) and (x2,y2)
+
+e.g. Display.drawLine(0,0,10,8,true);
+
+
+(lcd var name).drawRect(int x1,int y1,int x2,int y2,bool on,bool fill);
+draws a rectangle from (x1,y1) to (x2,y2)
+
+e.g. Display.drawRect(5,5,10,15,true,true);
+
+
+(lcd var name).drawCircle(int x1,int y1,int r,bool on,bool fill);
+draw a circle for centre point (x1,y1) with radius(r)
+
+e.g. Display.drawCircle(10,10,5,true,false);
+
+
+(lcd var name).drawBitmap(int x1,int y1,char bitm[],int arraysize,int sx,bool overl);
+draws a an array of bits line by line at (x1,y1)
+bitm[]: is the array of bytes
+arraysize: is the lenght of the array
+sx: is the width of the bit map(8,16,24,32,etc..)
+overl: is over lap with off pixels.on:NO transparency.off:transparency
+
+char happy[] = {
+B00100100,
+B00000000,
+B10000001,
+B01111110};
+
+e.g. Display(0,0,happy,4,8,false);
+
+
+(lcd var name).setCursorPos(int x,int y);
+set's cursor for text to (x,y)
+
+
+(lcd var name).drawText(String text,bool on,bool big);
+draws text(default text is from 1x6 to 5x6).big just makes text x2 the size
+
+Display.drawText(0,0,"Hello World",true,true);
+
+
+(lcd var name).drawChar(char c,bool on,bool big);
+draw a specific char character apart from that it's the same as drawtext
+
+e.g. Display.drawChar(0,0,136,true,false);
+
+
+character list
+0 null / unknown character
+32 space " "
+33 "!"
+34 """
+35 "#"
+36 "$"
+37 "%"
+38 "&"
+39 "'"
+40 "("
+41 ")"
+42 "*"
+43 "+"
+44 ","
+45 "-"
+46 "."
+47 "/"
+
+48 "0"
+49 "1"
+50 "2"
+51 "3"
+52 "4"
+53 "5"
+54 "6"
+55 "7"
+56 "8"
+57 "9"
+
+58 ":"
+59 ";"
+60 "<"
+61 "="
+62 ">"
+63 "?"
+64 "@"
+
+65 "A"
+66 "B"
+67 "C"
+68 "D"
+69 "E"
+70 "F"
+71 "G"
+72 "H"
+73 "I"
+74 "J"
+75 "K"
+76 "L"
+77 "M"
+78 "N"
+79 "O"
+80 "P"
+81 "Q"
+82 "R"
+83 "S"
+84 "T"
+85 "U"
+86 "V"
+87 "W"
+88 "X"
+89 "Y"
+90 "Z"
+
+91 "["
+92 "\"
+93 "]"
+94 "^"
+95 "_"
+96 "`"
+
+97 "a"
+98 "b"
+99 "c"
+100 "d"
+101 "e"
+102 "f"
+103 "g"
+104 "h"
+105 "i"
+106 "j"
+107 "k"
+108 "l"
+109 "m"
+110 "n"
+111 "o"
+112 "p"
+113 "q"
+114 "r"
+115 "s"
+116 "t"
+117 "u"
+118 "v"
+119 "w"
+120 "x"
+121 "y"
+122 "z"
+
+123 "{"
+124 "|"
+125 "}"
+126 "~"
+
+127 :)
+128 :|
+129 :(
+130 :P
+131 x(
+
+132 "degrees symbol"
+133 "plus minus"
+134 ">="
+135 "<="
+136 "pi"
+137 "divide symbol"
+138 superscript zero
+139 superscript one 
+140 superscript two
+141 superscript three
+142 superscript -zero
+143 superscript -one
+144 superscript -two
+145 superscript -three
+
+146 micro sign
