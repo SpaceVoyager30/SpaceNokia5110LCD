@@ -15,4 +15,5 @@ Pins 1-5 to arduino with 10K resistor or 5v to 3.3v logic level converter(for 5V
 May work with 5V but I have not tested it(I don't recommended it)
 
 Drawing to LCD takes < 3ms when draw text to sreen :)
+
 big circles are slow
