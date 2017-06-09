@@ -16,4 +16,4 @@ May work with 5V but I have not tested it(I don't recommended it)
 
 Drawing to LCD takes < 3ms when draw text to sreen :)
 
-big circles are slow
+big filled circles are slower
