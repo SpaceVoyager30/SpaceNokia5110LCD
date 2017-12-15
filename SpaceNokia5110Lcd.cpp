@@ -145,7 +145,6 @@ const byte textCode[][5] PROGMEM = {
       //-------------------maths-stuff--------------------------//
       };
 
-
  lcd::lcd(int RSTs,int CEs,int DCs,unsigned char c) {
 RST = RSTs;
 CE = CEs;
@@ -246,7 +245,7 @@ void lcd::setPixel(int x,int y,bool on){
 
 
 
-void lcd::drawRect(int x1,int y1,int x2,int y2,bool on,bool fill){
+void lcd::drawRect(int x1,int y1,int x2,int y2,bool fill,bool on){
   if(!fill){
   drawLine(x1,y1,x2,y1,on);
   drawLine(x1,y1,x1,y2,on);
@@ -262,7 +261,7 @@ void lcd::drawRect(int x1,int y1,int x2,int y2,bool on,bool fill){
 }
 
 
-void lcd::drawCircle(int x1,int y1,int r,bool on,bool fill){
+void lcd::drawCircle(int x1,int y1,int r,bool fill,bool on){
   int prey = 0;
   r++;
   for (double i = 1; i < 90;i+=20.00/r + 0.01){
@@ -329,10 +328,10 @@ void lcd::setCursorPos(int x,int y){
   cypos = y;
 }
 
-void lcd::drawChar(char c,bool on,bool big){
+void lcd::drawChar(char c,bool big,bool on){
   drawText(String(c),on,big);
 }
-void lcd::drawText(String text,bool on,bool big){
+void lcd::drawText(String text,bool big,bool on){
   int lp = 0;
   int ep = 0;
   int x = cxpos;

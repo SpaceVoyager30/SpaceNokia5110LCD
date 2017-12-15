@@ -1,11 +1,28 @@
 written by:Space_Voyager30
+v1.1
+
+[] around eg 'bool on' is optional
+
+all commands
+	lcd(int RSTs,int CEs,int DCs,[unsigned int]);
+	void clearLcd();
+	void drawLcd();
+      	void LcdDo(char data,bool cmd);
+     	void setPixel(int x,int y,[bool on]);
+   	void drawRect(int x1,int y1,int x2,int y2,[bool fill],[bool on]);
+   	void drawCircle(int x1,int y1,int r,[bool fill],[bool on]);
+   	void drawLine(int x1,int y1,int x2,int y2,[bool on]);
+   	void drawBitmap(int x1,int y1,char bitm[],int arraysize,int sx,bool overl);
+   	void setCursorPos(int x,int y);
+  	void drawChar(char c,[bool big],[bool on]);
+   	void drawText(String text,[bool big],[bool on]);
 
 
 DIN go's to MOSI
 CLK go's to SCK
 
 start
-lcd (lcd var name) (reset pin(RST),chip selection pin(CE),data/commands selection(DC))
+lcd (lcd var name) (reset pin(RST),chip selection pin(CE),data/commands selection(DC),[contrast default = 80])
 
 e.g. lcd Display(3,4,5);
 
@@ -26,28 +43,28 @@ e.g. Display.drawLcd();
 set data or commands to the lcd. look at https://www.sparkfun.com/datasheets/LCD/Monochrome/Nokia5110.pdf for details
 
 
-(lcd var name).setPixel(int x,int y,bool on);
+(lcd var name).setPixel(int x,int y,[bool on default = true]);
 sets a pixel at (x,y) on or off
 
 e.g. Display.setPixel(10,10,true);
 
 
-(lcd var name).drawLine(int x1,int y1,int x2,int y2,bool on);
+(lcd var name).drawLine(int x1,int y1,int x2,int y2,[bool on default = true]);
 draws a line between (x1,y1) and (x2,y2)
 
-e.g. Display.drawLine(0,0,10,8,true);
+e.g. Display.drawLine(0,0,10,8);
 
 
-(lcd var name).drawRect(int x1,int y1,int x2,int y2,bool on,bool fill);
+(lcd var name).drawRect(int x1,int y1,int x2,int y2,[bool fill default = true],[bool on default = true]);
 draws a rectangle from (x1,y1) to (x2,y2)
 
-e.g. Display.drawRect(5,5,10,15,true,true);
+e.g. Display.drawRect(5,5,10,15);
 
 
-(lcd var name).drawCircle(int x1,int y1,int r,bool on,bool fill);
+(lcd var name).drawCircle(int x1,int y1,int r,[bool fill default = true],[bool on default = true]);
 draw a circle for centre point (x1,y1) with radius(r)
 
-e.g. Display.drawCircle(10,10,5,true,false);
+e.g. Display.drawCircle(10,10,5);
 
 
 (lcd var name).drawBitmap(int x1,int y1,char bitm[],int arraysize,int sx,bool overl);
@@ -70,20 +87,20 @@ e.g. Display(0,0,happy,4,8,false);
 set's cursor for text to (x,y)
 
 
-(lcd var name).drawText(String text,bool on,bool big);
+(lcd var name).drawText(String text,[bool big default = false],[bool on default = true]);
 draws text(default text is from 1x6 to 5x6).big just makes text x2 the size
 
-Display.drawText(0,0,"Hello World",true,true);
+e.g. Display.drawText("Hello World",true,true);
 
 
-(lcd var name).drawChar(char c,bool on,bool big);
+(lcd var name).drawChar(char c,[bool big default = false],[bool on default = true]);
 draw a specific char character apart from that it's the same as drawtext
 
-e.g. Display.drawChar(0,0,136,true,false);
+e.g. Display.drawChar(0,0,136);
 
 
 character list
-0 null / unknown character
+0 null / unknown character / ! in side on O
 32 space " "
 33 "!"
 34 """

@@ -8,18 +8,18 @@
 class lcd
 {
   public:
-   lcd(int RSTs,int CEs,int DCs,unsigned  char c);
+   lcd(int RSTs,int CEs,int DCs,unsigned  char c = 80);
       void clearLcd();
       void drawLcd();
       void LcdDo(char data,bool cmd);
-      void setPixel(int x,int y,bool on);
-      void drawRect(int x1,int y1,int x2,int y2,bool on,bool fill);
-      void drawCircle(int x1,int y1,int r,bool on,bool fill);
-      void drawLine(int x1,int y1,int x2,int y2,bool on);
+      void setPixel(int x,int y,bool on = true);
+      void drawRect(int x1,int y1,int x2,int y2,bool fill = true,bool on = true);
+      void drawCircle(int x1,int y1,int r,bool fill = true,bool on = true);
+      void drawLine(int x1,int y1,int x2,int y2,bool on = true);
       void drawBitmap(int x1,int y1,char bitm[],int arraysize,int sx,bool overl);
      void setCursorPos(int x,int y);
-    void drawChar(char c,bool on,bool big);
-    void drawText(String text,bool on,bool big);
+    void drawChar(char c,bool big = false,bool on = true);
+    void drawText(String text,bool big = false,bool on = true);
     int cxpos = 0;
     int cypos = 0;
 
