@@ -9,7 +9,7 @@ all commands
 	void drawLcd();
       	void LcdDo(char data,bool cmd);
      	void setPixel(int x,int y,[bool on]);
-	bool setPixel(int x,int y);
+	bool getPixel(int x,int y);
    	void drawRect(int x1,int y1,int x2,int y2,[bool fill],[bool on]);
    	void drawCircle(int x1,int y1,int r,[bool fill],[bool on]);
    	void drawLine(int x1,int y1,int x2,int y2,[bool on]);
