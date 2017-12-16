@@ -206,7 +206,7 @@ SPI.transfer(0x20);
  for (int y = 0;y<6;y++){
      for (int x = 0;x<84;x++){
         SPI.transfer(screen[x][y]);
-	 // shiftOut(DIN, CLK, MSBFIRST,screen[x][y]);
+   // shiftOut(DIN, CLK, MSBFIRST,screen[x][y]);
      }
   }
   
@@ -230,6 +230,11 @@ digitalWrite(CE, HIGH);
 }
 
 
+bool lcd::getPixel(int x,int y){
+  int t =  y%8;
+  bool re = bitRead(screen[x][int(floor(y/8))],t);
+  return re;
+}
 
 void lcd::setPixel(int x,int y,bool on){
   int t =  y%8;
@@ -262,6 +267,9 @@ void lcd::drawRect(int x1,int y1,int x2,int y2,bool fill,bool on){
 
 
 void lcd::drawCircle(int x1,int y1,int r,bool fill,bool on){
+  if(x1 > 83  + r|| x1  < 0 - r|| y1 > 47  + r ||  y1 < 0  - r){
+     return;
+  }
   int prey = 0;
   r++;
   for (double i = 1; i < 90;i+=20.00/r + 0.01){
@@ -328,29 +336,39 @@ void lcd::setCursorPos(int x,int y){
   cypos = y;
 }
 
-void lcd::drawChar(char c,bool big,bool on){
-  drawText(String(c),on,big);
+void lcd::drawChar(unsigned char c,bool big,bool on, bool wrap){
+  drawText(String((char)c),big,on,wrap);
 }
-void lcd::drawText(String text,bool big,bool on){
+void lcd::drawText(String text,bool big,bool on, bool wrap){
   int lp = 0;
   int ep = 0;
   int x = cxpos;
   int y = cypos;
   for(int i = 0;i < text.length();i++){
-    unsigned char g = text.charAt(i);
+    int g = text[i]; //(unsigned char)text.charAt(i);
     g -= 31;
-    if(g < 1 || g > sizeof(textCode) / sizeof(textCode[0])){
-      g = 0;
+   if(g < -30){
+       g +=256;
     }
-    if(x + lp > 78){
+    if(g < 1 || g > sizeof(textCode) / sizeof(textCode[0])){
+      if(g != -21){
+         g = 0;
+      }
+    }
+    if(!big && wrap){
+       if(x + lp > 78){
+          x = cxpos = 0;
+          lp = 0;
+
+          y = cypos = y + 7;
+       }
+    }else if (x + lp > 78/2 && wrap){
        x = cxpos = 0;
        lp = 0;
-       if(big){
-          y = cypos = y + 14;
-        }else{
-         y = cypos = y + 7;
-       }
+       y = cypos = y + 14;
+
     }
+    if(g != -21){
     for(int a = 0;a < 5;a++){
       byte tCode = pgm_read_byte(&(textCode[g][a]));
       if(tCode == 0 && g != 1){
@@ -383,10 +401,22 @@ void lcd::drawText(String text,bool big,bool on){
       }
     }
   
-    lp++;
- }  
- 
-     if(big){
+    lp++;   
+
+  }else{
+    if(!big){
+          x = cxpos;
+          lp = 0;
+
+          y = cypos = y + 7;
+    }else{
+       x = cxpos;
+        lp = 0;
+        y = cypos = y + 14;
+      }
+    }
+  }
+  if(big){
     cxpos = x + lp * 2;
    }else{
   cxpos = x + lp;

@@ -13,23 +13,24 @@ class lcd
       void drawLcd();
       void LcdDo(char data,bool cmd);
       void setPixel(int x,int y,bool on = true);
+      bool lcd::getPixel(int x,int y);
       void drawRect(int x1,int y1,int x2,int y2,bool fill = true,bool on = true);
       void drawCircle(int x1,int y1,int r,bool fill = true,bool on = true);
       void drawLine(int x1,int y1,int x2,int y2,bool on = true);
-      void drawBitmap(int x1,int y1,char bitm[],int arraysize,int sx,bool overl);
+      void drawBitmap(int x1,int y1,char bitm[],int arraysize,int sx,bool overl = false);
      void setCursorPos(int x,int y);
-    void drawChar(char c,bool big = false,bool on = true);
-    void drawText(String text,bool big = false,bool on = true);
+    void drawChar(unsigned char c,bool big = false,bool on = true, bool wrap = true);
+    void drawText(String text,bool big = false,bool on = true, bool wrap = true);
     int cxpos = 0;
     int cypos = 0;
 
      int RST;
      int CE;
      int DC;
+         unsigned char screen[84][6] = {};
     private:
 unsigned char c;
    unsigned char contrast;//B01010000
-    unsigned char screen[84][6] = {};
     char data;
    char bitm[];
     int x;
@@ -44,5 +45,6 @@ unsigned char c;
     int lp = 0;
     int ep = 0;
     unsigned char g;
+    bool re;
 };
 #endif
