@@ -26,3 +26,5 @@ drawBitmap 	KEYWORD2
 drawChar 	KEYWORD2
 setCursorPos 	KEYWORD2
 drawText 	KEYWORD2
+fsin		KEYWORD2
+fcos		KEYWORD2

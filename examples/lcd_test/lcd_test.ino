@@ -81,8 +81,8 @@ void setup() {
     for(int i = 0;i < 500;i++){
             lcd.clearLcd();
       for(int w = 0; w < 84;w++){
-        //lcd.setPixel(w,24 + sin(radians(i + (w* 5)))*20);
-        int sr = 24 + sin(radians(i + (w * i / 10)))*20;
+        //lcd.setPixel(w,24 + lcd.fsin(radians(i + (w* 5)))*20);
+        int sr = 24 + lcd.fsin(i + (w * i / 10))*20;
         lcd.drawLine(w-1,pery,w, sr);
         pery = sr;
       }
@@ -136,13 +136,13 @@ void setup() {
    delay(2000);
    for(int i = 0;i < 360*4;i++){
     lcd.clearLcd();
-    lcd.drawBitmap(84/2-8 + (cos(radians(i))) * 30,48/2-8 + (sin(radians(i))) * 15,thu,sizeof(thu),16);
+    lcd.drawBitmap(84/2-8 + (cos(radians(i))) * 30,48/2-8 + (lcd.fsin(i)) * 15,thu,sizeof(thu),16);
     lcd.drawLcd();
    }
    for(int i = 0;i < 360*2;i++){
     lcd.clearLcd();
-    lcd.drawBitmap(84/2-8 + (cos(radians(i))) * 30,48/2-8 + (sin(radians(i))) * 15,thu,sizeof(thu),16);
-    lcd.drawBitmap(84/2-8 + (cos(radians(i+180))) * 30,48/2-8 + (sin(radians(i+180))) * 15,thu,sizeof(thu),16);
+    lcd.drawBitmap(84/2-8 + (cos(radians(i))) * 30,48/2-8 + (lcd.fsin(i)) * 15,thu,sizeof(thu),16);
+    lcd.drawBitmap(84/2-8 + (cos(radians(i+180))) * 30,48/2-8 + (lcd.fsin(i+180)) * 15,thu,sizeof(thu),16);
     lcd.drawLcd();
    }
 

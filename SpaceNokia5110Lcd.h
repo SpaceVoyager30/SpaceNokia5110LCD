@@ -4,7 +4,6 @@
 #include "Arduino.h"
 #include "SPI.h"
 
-
 class lcd
 {
   public:
@@ -13,7 +12,7 @@ class lcd
       void drawLcd();
       void LcdDo(char data,bool cmd);
       void setPixel(int x,int y,bool on = true);
-      bool lcd::getPixel(int x,int y);
+      bool getPixel(int x,int y);
       void drawRect(int x1,int y1,int x2,int y2,bool fill = true,bool on = true);
       void drawCircle(int x1,int y1,int r,bool fill = true,bool on = true);
       void drawLine(int x1,int y1,int x2,int y2,bool on = true);
@@ -21,6 +20,9 @@ class lcd
      void setCursorPos(int x,int y);
     void drawChar(unsigned char c,bool big = false,bool on = true, bool wrap = true);
     void drawText(String text,bool big = false,bool on = true, bool wrap = true);
+
+		float lcd::fsin(int deg) ;
+	float lcd::fcos(int deg) ;
     int cxpos = 0;
     int cypos = 0;
 
