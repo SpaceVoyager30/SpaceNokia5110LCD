@@ -1,0 +1,28 @@
+#######################################
+# Syntax Coloring Map
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+cxpos	KEYWORD1
+cypos	KEYWORD1
+screen  KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+lcd		KEYWORD2
+clearLcd	KEYWORD2
+drawLcd		KEYWORD2
+LcdDo		KEYWORD2
+setPixel	 KEYWORD2
+getPixel 	KEYWORD2
+drawRect	 KEYWORD2
+drawCircle	 KEYWORD2
+drawLine 	KEYWORD2
+drawBitmap 	KEYWORD2
+drawChar 	KEYWORD2
+setCursorPos 	KEYWORD2
+drawText 	KEYWORD2
