@@ -1,5 +1,5 @@
 written by:Space_Voyager30
-v1.1
+v1.2
 
 [] around eg 'bool on' is optional
 

@@ -1,6 +1,15 @@
 #include <SpaceNokia5110Lcd.h>
 
+#if defined(ESP8266)
+lcd lcd(D2,D3,D4);
+#else
 lcd lcd(8,9,10);
+#endif
+//this display runs on 3.3v
+
+
+//-------------------------------------------------------------------
+//For arduino's
 //connect pins thought level shifter or 10k resistor on 5V arduinos
 //reset(RST) on pin 8
 //chip select(CE) on pin 9
@@ -10,16 +19,41 @@ lcd lcd(8,9,10);
 //VCC to 3.3V
 //GND to GND
 
-//for command reference, please see commands.txt in the libraries folder
+//-------------------------------------------------------------------
+//For WeMos D1 r1 esp8266's
+//connect pins directly due to the esp's being 3.3v
+//reset(RST) on pin D2
+//chip select(CE) on pin D3
+//data/commands(DC) on pin D4
+//data in(DIN) on pin D11
+//serial clock(CLK) on pin D13
+//VCC to 3.3V
+//GND to GND
 
+//For other esp8266 boards
+//connect:
+//reset(RST) on pin any GPIO that is not SPI(e.g.SCK,MOSI,MISO) and state it in the:lcd lcd(reset pin,chip enable pin,data / command pin)
+//chip select(CE) on pin ^^
+//data/commands(DC) on pin ^^
+//data in(DIN) on pin D11 or the main MOSI pin
+//serial clock(CLK) on pin D13 or the main SCK
+//VCC to 3.3V
+//GND to GND
+
+
+//to use back light connect "Light" pin to GND
+
+
+//for command reference, please see commands.txt in the libraries folder
 void setup() {
- // Serial.begin(9600);
+ 
+ // Serial.begin(115200);
   lcd.clearLcd();
   lcd.setCursorPos(0,0);
   lcd.drawText("Hello\nWorld!",true);
   lcd.drawLcd();
   delay(1000);
-  randomSeed(analogRead(A5)); 
+ randomSeed(analogRead(A0)); 
 
   lcd.clearLcd();
   lcd.setCursorPos(0,0);
@@ -29,7 +63,7 @@ void setup() {
     lcd.drawLcd();
     delay(5);
   }
-
+  
   delay(3000);
 
     lcd.clearLcd();
@@ -54,39 +88,40 @@ void setup() {
 
 
   delay(1000);
-
-
     lcd.clearLcd();
   lcd.setCursorPos(0,0);
+
   for(int i = 0;i < 48;i+=2){
-    
+
     lcd.drawRect(84/2 - i,48/2 - i,84/2 + i,48/2 + i,false);
+
     lcd.drawLcd();
-    delay(50);
+
+    delay(25);
   }
 
 
 
       lcd.clearLcd();
   lcd.setCursorPos(0,0);
-  for(int i = 48;i > -1;i-=2){
+  for(int i = 48;i > 0;i-=2){
     
     lcd.drawRect(84/2 - i,48/2 - i,84/2 + i,48/2 + i,true,i % 4 == 0);
     lcd.drawLcd();
     delay(5);
   }
-
   delay(1000);
-  int pery;
+  int pery = 0;
     for(int i = 0;i < 500;i++){
             lcd.clearLcd();
-      for(int w = 0; w < 84;w++){
+      for(int w = 1; w < 84;w++){
         //lcd.setPixel(w,24 + lcd.fsin(radians(i + (w* 5)))*20);
         int sr = 24 + lcd.fsin(i + (w * i / 10))*20;
         lcd.drawLine(w-1,pery,w, sr);
         pery = sr;
       }
      lcd.drawLcd();
+    
     }
     lcd.drawLine(0,0,0,47,false);
     for(int i = 0;i< 48;i++){

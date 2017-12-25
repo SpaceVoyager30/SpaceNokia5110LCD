@@ -13,7 +13,6 @@ made by:Space_Voyager30
 
 
 
-
 const byte textCode[][5] PROGMEM = {
       {B01111000,B11111100,B10010100,B11111100,B01111000}, //0 null / unknown character
     
@@ -241,10 +240,20 @@ RST = RSTs;
 CE = CEs;
 DC =DCs;
 contrast = c;
+//SPI.pins(D13,D12,D11,D10);
+
+
+SPI.setBitOrder(MSBFIRST);
+
+  	  
+  #if defined(ESP8266)
+  SPI.setFrequency(4000000);
+  #else
+  SPI.setClockDivider(SPI_CLOCK_DIV8);
+#endif
+
+SPI.setDataMode(SPI_MODE0);
 SPI.begin();
- SPI.setBitOrder(MSBFIRST);
-SPI.setClockDivider(SPI_CLOCK_DIV8);
-SPI.setDataMode(SPI_MODE3);
 
 
 pinMode(RST, OUTPUT);
@@ -282,42 +291,54 @@ drawLcd();
 
  void lcd::drawLcd(){
 
-
+ //SPI.beginTransaction(SPISettings(2000000,MSBFIRST,SPI_MODE0));
   digitalWrite(CE, LOW);
   digitalWrite(DC, LOW);
- // shiftOut(DIN, CLK, MSBFIRST, 0x21);
- //shiftOut(DIN, CLK, MSBFIRST, 0x10);
-  //shiftOut(DIN, CLK, MSBFIRST, 0x40);
-  //shiftOut(DIN, CLK, MSBFIRST, 0x20);
-   SPI.transfer(0x21);
+
+ /* shiftOut(DIN, CLK, MSBFIRST, 0x21);
+  shiftOut(DIN, CLK, MSBFIRST, 0x10);
+  shiftOut(DIN, CLK, MSBFIRST, 0x40);
+  shiftOut(DIN, CLK, MSBFIRST, 0x20);*/
+ SPI.transfer(0x21);
  SPI.transfer(0x10);
  SPI.transfer(0x40);
 SPI.transfer(0x20);
+/*SPI.write(0x21);
+SPI.write(0x10);
+SPI.write(0x40);
+SPI.write(0x20);*/
   digitalWrite(DC, HIGH);
+   #if defined(ESP8266)
+  	  ESP.wdtFeed();
+	#endif
  for (int y = 0;y<6;y++){
      for (int x = 0;x<84;x++){
         SPI.transfer(screen[x][y]);
-   // shiftOut(DIN, CLK, MSBFIRST,screen[x][y]);
+		//SPI.write(screen[x][y]);
+    //shiftOut(DIN, CLK, MSBFIRST,screen[x][y]);
      }
   }
   
   digitalWrite(CE, HIGH);
-
+  SPI.endTransaction();
 }
 
 
 
 void lcd::LcdDo(char data,bool cmd)
 {
-
-
+  #if defined(ESP8266)
+  	  ESP.wdtFeed();
+  #endif
+//SPI.beginTransaction(SPISettings(2000000,MSBFIRST,SPI_MODE0));
   if(cmd) digitalWrite(DC, LOW);
   else digitalWrite(DC, HIGH);
-
 digitalWrite(CE, LOW);
 SPI.transfer(data);
+//SPI.write(data);
 //shiftOut(DIN, CLK, MSBFIRST, data);
 digitalWrite(CE, HIGH);
+SPI.endTransaction();
 }
 
 
@@ -343,16 +364,32 @@ void lcd::setPixel(int x,int y,bool on){
 
 void lcd::drawRect(int x1,int y1,int x2,int y2,bool fill,bool on){
   if(!fill){
-  drawLine(x1,y1,x2,y1,on);
+  if(x1 != x2){
   drawLine(x1,y1,x1,y2,on);
   drawLine(x2,y1,x2,y2,on);
-  drawLine(x1,y2,x2,y2,on);
-  }else{
-    for (int y = y1;y != y2+(y2 - y1) / abs(y2-y1);y=y+(y2 - y1) / abs(y2-y1)){
-    for (int x = x1;x != x2+(x2 - x1) / abs(x2-x1);x=x+(x2 - x1) / abs(x2-x1)){
-      setPixel(x,y,on);
-    }
   }
+  if(y1 != y2){
+  drawLine(x1,y1,x2,y1,on);
+  drawLine(x1,y2,x2,y2,on);
+  }
+  }else{
+	 if(y1 != y2 && x1 != x2){
+	   if(y1>y2){
+			int t = y1;
+			y1 = y2;
+			y2 = t;
+		}
+		if(x1>x2){
+			int t = x1;
+			x1 = x2;
+			x2 = t;
+		}
+		for(int y = y1;y < y2+1;y++){
+			for(int x = x1;x < x2+1;x++){
+				setPixel(x,y,on);
+			}
+		}
+	  }
   }
 }
 
@@ -386,14 +423,27 @@ void lcd::drawCircle(int x1,int y1,int r,bool fill,bool on){
 
 
 void lcd::drawLine(int x1,int y1,int x2,int y2,bool on){
-
+  if(x1 == x2 && y1 == y2){
+  	  setPixel(x1,y1,on);
+	  return;
+  }
   if(x1 == x2){
-    for(int y = y1;y != y2+(y2 - y1) / abs(y2-y1);y=y+(y2 - y1) / abs(y2-y1)){
+ 	   if(y1>y2){
+			int t = y1;
+			y1 = y2;
+			y2 = t;
+		}
+    for(int y = y1;y < y2+1;y++){
       setPixel(x1,y,on);
     }  
   }else if(y1 == y2){
-    for(int x = x1;x != x2 +(x2 - x1) / abs(x2-x1);x=x+(x2 - x1) / abs(x2-x1)){
-      setPixel(x,y1,on);
+  	   if(x1>x2){
+			int t = x1;
+			x1 = x2;
+			x2 = t;
+		}
+    for(int x = x1;x < x2+1;x++){
+     setPixel(x,y1,on);
     }
   }else{
     if(abs(x2-x1) > abs(y2-y1)){

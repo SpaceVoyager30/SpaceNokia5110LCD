@@ -21,8 +21,8 @@ class lcd
     void drawChar(unsigned char c,bool big = false,bool on = true, bool wrap = true);
     void drawText(String text,bool big = false,bool on = true, bool wrap = true);
 
-		float lcd::fsin(int deg) ;
-	float lcd::fcos(int deg) ;
+		float fsin(int deg) ;
+	float fcos(int deg) ;
     int cxpos = 0;
     int cypos = 0;
 
@@ -32,6 +32,7 @@ class lcd
          unsigned char screen[84][6] = {};
     private:
 unsigned char c;
+	
    unsigned char contrast;//B01010000
     char data;
    char bitm[];
