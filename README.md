@@ -27,7 +27,7 @@ Pins 1-5 to arduino with 10K resistor or 5v to 3.3v logic level converter(for 5V
 May work with 5V but I have not tested it(I don't recommended it)
 
 
-LCD pins using an esp8266 12e wemos D1:
+LCD pins using an esp8266 12e wemos D1 r1:
 
 1.RST -- to any pin(not SPI pins)
 
