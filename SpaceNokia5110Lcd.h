@@ -9,7 +9,7 @@ class lcd
   public:
    lcd(int RSTs,int CEs,int DCs,unsigned  char c = 80);
       void clearLcd();
-      void drawLcd();
+      void drawLcd(bool rotate = false);
       void LcdDo(char data,bool cmd);
       void setPixel(int x,int y,bool on = true);
       bool getPixel(int x,int y);
@@ -31,11 +31,10 @@ class lcd
      int DC;
          unsigned char screen[84][6] = {};
     private:
-unsigned char c;
-	
+    unsigned char c;
    unsigned char contrast;//B01010000
     char data;
-   char bitm[];
+   bool temp;
     int x;
     int y;
     int x1;
@@ -49,5 +48,6 @@ unsigned char c;
     int ep = 0;
     unsigned char g;
     bool re;
+   char bitm[];
 };
 #endif
