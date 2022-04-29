@@ -16,7 +16,7 @@ screen  KEYWORD1
 lcd		KEYWORD2
 clearLcd	KEYWORD2
 drawLcd		KEYWORD2
-LcdDo		KEYWORD2
+lcdDo		KEYWORD2
 setPixel	 KEYWORD2
 getPixel 	KEYWORD2
 drawRect	 KEYWORD2

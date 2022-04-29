@@ -46,31 +46,31 @@ lcd lcd(8,9,10);
 
 //for command reference, please see commands.txt in the libraries folder
 void setup() {
- 
+
  // Serial.begin(115200);
   lcd.clearLcd();
   lcd.setCursorPos(0,0);
   lcd.drawText("Hello\nWorld!",true);
   lcd.drawLcd();
   delay(1000);
- randomSeed(analogRead(A0)); 
+ randomSeed(analogRead(A0));
 
   lcd.clearLcd();
   lcd.setCursorPos(0,0);
   for(int i = 31;i < 147;i++){
-    
+
     lcd.drawChar(i);
     lcd.drawLcd();
     delay(5);
   }
-  
+
   delay(3000);
 
     lcd.clearLcd();
   lcd.setCursorPos(0,0);
   for(int i = 0;i < 48;i+=2){
-    
-    lcd.drawCircle(84/2,48/2,i,false);
+
+    lcd.drawCircle(84/2,48/2,i,1);
     lcd.drawLcd();
     delay(5);
   }
@@ -80,8 +80,8 @@ void setup() {
       lcd.clearLcd();
   lcd.setCursorPos(0,0);
   for(int i = 48;i > -1;i-=2){
-    
-    lcd.drawCircle(84/2,48/2,i,true,i % 4 == 0);
+
+    lcd.drawCircle(84/2,48/2,i,-1,i % 4 == 0);
     lcd.drawLcd();
     delay(5);
   }
@@ -105,7 +105,7 @@ void setup() {
       lcd.clearLcd();
   lcd.setCursorPos(0,0);
   for(int i = 48;i > 0;i-=2){
-    
+
     lcd.drawRect(84/2 - i,48/2 - i,84/2 + i,48/2 + i,true,i % 4 == 0);
     lcd.drawLcd();
     delay(5);
@@ -121,7 +121,7 @@ void setup() {
         pery = sr;
       }
      lcd.drawLcd();
-    
+
     }
     lcd.drawLine(0,0,0,47,false);
     for(int i = 0;i< 48;i++){
@@ -135,7 +135,7 @@ void setup() {
       }
     }
    }
-  
+
   for(int i = 0;i < 84;i++){
     int x = random(0,84);
     if(lcd.getPixel(x,0) == 0){
@@ -181,7 +181,7 @@ void setup() {
     lcd.drawLcd();
    }
 
-  
+
   char space[] = {
     B00010000,B01000000,
     B00001000,B10000000,
@@ -236,7 +236,7 @@ void setup() {
         parsv[i][1] *= -0.95f;
         pars[i][1]--;
       }
-      lcd.drawCircle(pars[i][0],pars[i][1],parsize[i]);
+      lcd.drawCircle(pars[i][0],pars[i][1],parsize[i],-1);
     }
     lcd.drawLcd();
     delay(10);
@@ -244,5 +244,5 @@ void setup() {
 }
 
 void loop(){
-  
+
 }

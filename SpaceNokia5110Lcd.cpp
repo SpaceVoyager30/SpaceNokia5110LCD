@@ -10,12 +10,9 @@ made by:Space_Voyager30
 #include <SPI.h>
 
 
-
-
-
 const byte textCode[][5] PROGMEM = {
       {B01111000,B11111100,B10010100,B11111100,B01111000}, //0 null / unknown character
-    
+
       {B00000000,B00000000,B00000000,B00000000,B00000000}, //32 space " "
       {B11110100}, //33 "!"
       {B11000000,B00000000,B11000000}, //34 """
@@ -32,7 +29,7 @@ const byte textCode[][5] PROGMEM = {
       {B00010000,B00010000,B00010000,B00010000}, //45 "-"
       {B00000100}, // 46 "."
       {B00001100,B00110000,B11000000}, //47 "/"
-      
+
       {B01111000,B10001100,B10110100,B11000100,B01111000}, // 48 "0"
       {B00000100,B01000100,B11111100,B00000100,B00000100},// 49 "1"
       {B01000100,B10001100,B10010100,B10010100,B01100100},// 50 "2"
@@ -43,7 +40,7 @@ const byte textCode[][5] PROGMEM = {
       {B10000100,B10001000,B10010000,B10100000,B11000000},// 55 "7"
       {B01011000,B10100100,B10100100,B10100100,B01011000},// 56 "8"
       {B01100100,B10010100,B10010100,B10010100,B01111000},// 57 "9"
-      
+
       {B00101000},// 58 ":"
       {B00101100},// 59 ";"
       {B00010000,B00101000,B01000100}, //60 "<"
@@ -51,7 +48,7 @@ const byte textCode[][5] PROGMEM = {
       {B01000100,B00101000,B00010000}, //62 ">"
       {B01000000,B10000000,B10010100,B10100000,B01000000}, //63 "?"
       {B01111000,B10000100,B10110100,B10110100,B01100100}, //64 "@"
-      
+
       {B00001100,B01110000,B10010000,B01110000,B00001100}, //65 "A"
       {B11111100,B10100100,B10100100,B10100100,B01011000}, //66 "B"
       {B01111000,B10000100,B10000100,B10000100,B01001000}, //67 "C"
@@ -135,14 +132,14 @@ const byte textCode[][5] PROGMEM = {
       {B00010000,B00010000,B01010100,B00010000,B00010000}, //137 "divide symbol"
 
       {B11100000,B10100000,B11100000}, //138 superscript zero
-      {B11100000}, //139 superscript one 
+      {B11100000}, //139 superscript one
       {B10100000,B01100000,B00100000,B00000000,B00000000}, //140 superscript two
       {B10100000,B11100000,B11100000,B00000000,B00000000}, //141 superscript three
       {B01000000,B01000000,B11100000,B10100000,B11100000}, //142 superscript -zero
       {B01000000,B01000000,B00000000,B11100000}, //143 superscript -one
       {B01000000,B01000000,B10100000,B01100000,B00100000}, //144 superscript -two
       {B01000000,B01000000,B10100000,B11100000,B11100000}, //145 superscript -three
-      
+
       {B00111100,B00001000,B00110000}, //146 "?"
       {B00000000,B00000000,B00000000,B00000000,B00000000}, //147
       //-------------------maths-stuff--------------------------//
@@ -151,7 +148,7 @@ const byte textCode[][5] PROGMEM = {
 
 	  //the code from here to line 235 is part of Anon-Penguin's SpeedTrig  https://github.com/Anon-Penguin/SpeedTrig
 
-	  const float SIN_TABLE[181] PROGMEM={
+const float SIN_TABLE[181] PROGMEM={
   0.000000, 0.008727, 0.017452, 0.026177, 0.034899, 0.043619, 0.052336, 0.061049, 0.069756, 0.078459, 0.087156, 0.095846, 0.104528,
   0.113203, 0.121869, 0.130526, 0.139173, 0.147809, 0.156434, 0.165048, 0.173648, 0.182236, 0.190809, 0.199368, 0.207912, 0.216440,
   0.224951, 0.233445, 0.241922, 0.250380, 0.258819, 0.267238, 0.275637, 0.284015, 0.292372, 0.300706, 0.309017, 0.317305, 0.325568,
@@ -173,179 +170,148 @@ float lcd::fsin(int deg) {
   deg *= 10;
   float result = 0;
   int sign = 1;
-  
+
   if (deg < 0) {
     deg = -deg;
     sign = -1;
   }
-  
+
   while(deg >= 3600) {
     deg -= 3600;
   }
-  
+
   if((deg > 0) && (deg <= 900)) {
     //0 and 90 degrees.
     result = pgm_read_float(&(SIN_TABLE[deg / 5]));
-    
+
   } else if((deg > 900) && (deg <= 1800)) {
     //90 and 180 degrees.
     result = pgm_read_float(&(SIN_TABLE[(1800 - deg) / 5]));
-    
+
   } else if((deg > 1800) && (deg <= 2700)) {
     //180 and 270 degrees.
     result = -pgm_read_float(&(SIN_TABLE[(deg - 1800) / 5]));
-    
+
   } else if((deg > 2700) && (deg <= 3600)) {
     //270 and 360 degrees.
     result = -pgm_read_float(&(SIN_TABLE[(3600 - deg) / 5]));
-  
+
   }
   return sign * result;
 }
 
 float lcd::fcos(int deg) {
   deg *= 10;
-  float result = 0;           
+  float result = 0;
   if (deg < 0) {
     deg = -deg;
   }
-  
+
   while(deg >= 3600) {
     deg -= 3600;
   }
-  
+
   if((deg >= 0) && (deg <= 900)) {
     //0 and 90 degrees.
     result = pgm_read_float(&(SIN_TABLE[(900 - deg) / 5]));
-  
+
   } else if((deg > 900) && (deg <= 1800)) {
     //90 and 180 degrees.
     result = -pgm_read_float(&(SIN_TABLE[(deg - 900) / 5]));
-  
+
   } else if((deg > 1800) && (deg <= 2700)) {
     //180 and 270 degrees.
     result = -pgm_read_float(&(SIN_TABLE[(2700 - deg) / 5]));
-  
+
   } else if((deg >= 2700) && (deg <= 3600)) {
     //270 and 360 degrees.
     result = pgm_read_float(&(SIN_TABLE[(deg - 2700) / 5]));
-    
+
   }
   return result;
 }
 
 
- lcd::lcd(int RSTs,int CEs,int DCs,unsigned char c) {
-RST = RSTs;
-CE = CEs;
-DC =DCs;
-contrast = c;
-//SPI.pins(D13,D12,D11,D10);
+lcd::lcd(int RSTs,int CEs,int DCs,unsigned char c) {
+  RST = RSTs;
+  CE = CEs;
+  DC =DCs;
+  contrast = c;
 
+  SPI.setBitOrder(MSBFIRST);
 
-SPI.setBitOrder(MSBFIRST);
-
-  	  
   #if defined(ESP8266)
   SPI.setFrequency(4000000);
   #else
   SPI.setClockDivider(SPI_CLOCK_DIV8);
-#endif
+  #endif
+  SPI.begin();
 
-SPI.setDataMode(SPI_MODE0);
-SPI.begin();
+  pinMode(RST, OUTPUT);
+  pinMode(CE, OUTPUT);
+  pinMode(DC, OUTPUT);
 
+  digitalWrite(RST, LOW);
+  digitalWrite(RST, HIGH);
 
-pinMode(RST, OUTPUT);
-pinMode(CE, OUTPUT);
-pinMode(DC, OUTPUT);
-//pinMode(DIN, OUTPUT);
-//pinMode(CLK, OUTPUT);
+  //contrast = contrast << 1 >> 1;
+  contrast = contrast | B10000000;
 
-digitalWrite(RST, LOW);
-digitalWrite(RST, HIGH); 
- 
-//contrast = contrast << 1 >> 1;
-contrast = contrast | B10000000;
-
-LcdDo(0x21,true);
-LcdDo(contrast,true);
-LcdDo(0x04,true);
-LcdDo(0x14,true);
-LcdDo(0x20,true);
-LcdDo(0x0C,true);
-clearLcd();
-drawLcd();
-
+  lcdDo(0x21,true);     //switch to extended instruction set
+  lcdDo(contrast,true); //set contrast(write VOP to register)
+  lcdDo(0x04,true);     //set Temperature Coefficient to 0
+  lcdDo(0x10,true);     //set Bias System (BSx) to 0
+  lcdDo(0x20,true);     //switch to basic instruction set
+  lcdDo(0x0C,true);
+  clearLcd();
+  drawLcd();
 }
 
- void lcd::clearLcd(){
-  for (int y = 0;y<6;y++){
-     for (int x = 0;x<84;x++){
-      screen[x][y] = 0x00;
-     }
+
+void lcd::clearLcd(){ //sets all pixels in  frame buffer ot off
+  for (int i = 0;i<504;i++){
+    frameBuffer[i] = 0;
   }
 }
 
 
-
- void lcd::drawLcd(){
-
- //SPI.beginTransaction(SPISettings(2000000,MSBFIRST,SPI_MODE0));
+void lcd::drawLcd(){
+  #if defined(ESP8266)
+      ESP.wdtFeed();
+  #endif
   digitalWrite(CE, LOW);
   digitalWrite(DC, LOW);
-
- /* shiftOut(DIN, CLK, MSBFIRST, 0x21);
-  shiftOut(DIN, CLK, MSBFIRST, 0x10);
-  shiftOut(DIN, CLK, MSBFIRST, 0x40);
-  shiftOut(DIN, CLK, MSBFIRST, 0x20);*/
- SPI.transfer(0x21);
- SPI.transfer(0x10);
- SPI.transfer(0x40);
-SPI.transfer(0x20);
-/*SPI.write(0x21);
-SPI.write(0x10);
-SPI.write(0x40);
-SPI.write(0x20);*/
+  SPI.beginTransaction(SPISettings(4000000, MSBFIRST, SPI_MODE0));
+  SPI.transfer(0x20);
+  SPI.transfer(0x40);
+  SPI.transfer(0x80);
   digitalWrite(DC, HIGH);
-   #if defined(ESP8266)
-  	  ESP.wdtFeed();
-	#endif
- for (int y = 0;y<6;y++){
-     for (int x = 0;x<84;x++){
-        SPI.transfer(screen[x][y]);
-		//SPI.write(screen[x][y]);
-    //shiftOut(DIN, CLK, MSBFIRST,screen[x][y]);
-     }
+  for(int i = 0;i < 504;i++){
+    SPI.transfer(frameBuffer[i]);
   }
-  
+  SPI.endTransaction();
+  digitalWrite(CE, HIGH);
+}
+
+
+
+void lcd::lcdDo(char data,bool cmd)
+{
+  #if defined(ESP8266)
+  	  ESP.wdtFeed();
+  #endif
+  if(cmd) digitalWrite(DC, LOW);
+  else digitalWrite(DC, HIGH);
+  SPI.beginTransaction(SPISettings(4000000, MSBFIRST, SPI_MODE0));
+  digitalWrite(CE, LOW);
+  SPI.transfer(data);
   digitalWrite(CE, HIGH);
   SPI.endTransaction();
 }
 
 
-
-void lcd::LcdDo(char data,bool cmd)
-{
-  #if defined(ESP8266)
-  	  ESP.wdtFeed();
-  #endif
-//SPI.beginTransaction(SPISettings(2000000,MSBFIRST,SPI_MODE0));
-  if(cmd) digitalWrite(DC, LOW);
-  else digitalWrite(DC, HIGH);
-digitalWrite(CE, LOW);
-SPI.transfer(data);
-//SPI.write(data);
-//shiftOut(DIN, CLK, MSBFIRST, data);
-digitalWrite(CE, HIGH);
-SPI.endTransaction();
-}
-
-
 bool lcd::getPixel(int x,int y){
-  int t =  y%8;
-  bool re = bitRead(screen[x][int(floor(y/8))],t);
-  return re;
+  return bitRead(frameBuffer[(y / 8) * 84 + (x % 84)], y % 8);
 }
 
 void lcd::setPixel(int x,int y,bool on){
@@ -354,69 +320,58 @@ void lcd::setPixel(int x,int y,bool on){
     return;
   }
   if (on){
-  screen[x][int(floor(y/8))] = screen[x][int(floor(y/8))] | (char(B00000001 << t));
-  }else{
-    screen[x][int(floor(y/8))] = screen[x][int(floor(y/8))] & (char(B00000001 << t) ^ B11111111);
+    frameBuffer[(y / 8) * 84 + (x % 84)] = frameBuffer[(y / 8) * 84 + (x % 84)] | (char(B00000001 << t));
+    return;
   }
+  frameBuffer[(y / 8) * 84 + (x % 84)] = frameBuffer[(y / 8) * 84 + (x % 84)] & (char(B00000001 << t) ^ B11111111);
 }
 
 
 
 void lcd::drawRect(int x1,int y1,int x2,int y2,bool fill,bool on){
-  if(!fill){
-  if(x1 != x2){
-  drawLine(x1,y1,x1,y2,on);
-  drawLine(x2,y1,x2,y2,on);
+  if(!fill){ //If the rectangle is hollow
+    if(x1 != x2){
+    drawLine(x1,y1,x1,y2,on);
+    drawLine(x2,y1,x2,y2,on);
+    }
+    if(y1 != y2){
+    drawLine(x1,y1,x2,y1,on);
+    drawLine(x1,y2,x2,y2,on);
+    }
+    return;
   }
-  if(y1 != y2){
-  drawLine(x1,y1,x2,y1,on);
-  drawLine(x1,y2,x2,y2,on);
-  }
-  }else{
-	 if(y1 != y2 && x1 != x2){
-	   if(y1>y2){
-			int t = y1;
-			y1 = y2;
-			y2 = t;
-		}
-		if(x1>x2){
-			int t = x1;
-			x1 = x2;
-			x2 = t;
-		}
-		for(int y = y1;y < y2+1;y++){
-			for(int x = x1;x < x2+1;x++){
-				setPixel(x,y,on);
-			}
-		}
-	  }
+  if(y1 != y2 && x1 != x2){ //If the rectangle is filled
+    if(y1>y2){
+      int t = y1;
+      y1 = y2;
+      y2 = t;
+    }
+    if(x1>x2){
+      int t = x1;
+      x1 = x2;
+      x2 = t;
+    }
+    for(int y = y1;y < y2+1;y++){
+      for(int x = x1;x < x2+1;x++){
+        setPixel(x,y,on);
+      }
+    }
   }
 }
 
 
-
-void lcd::drawCircle(int x1,int y1,int r,bool fill,bool on){
-  if(x1 > 83  + r|| x1  < 0 - r|| y1 > 47  + r ||  y1 < 0  - r){
-     return;
-  }
-  int prey = 0;
-  r++;
-  for (double i = 1; i < 90;i+=20.00/r + 0.01){
-    int nx = fcos(i) * r;
-    int ny = fsin(i) * r;
-    if(fill){
-     if(prey != ny + y1){
-     for(int fi = nx + x1; fi > -nx + x1 - 1;fi--){
-      setPixel(fi,ny + y1,on);
-      setPixel(fi,-ny + y1,on);
-     }
-     }
-     prey = ny + y1;
-    }else{
-    setPixel(nx + x1,ny + y1,on);
-    setPixel(-nx + x1,ny + y1,on);
-    setPixel(nx + x1,-ny + y1,on);
-    setPixel(-nx + x1,-ny + y1,on);
+void lcd::drawCircle(int xPosition,int yPosition,unsigned int radius,unsigned int thickness,bool on){
+  radius++;
+  if(thickness > radius) thickness = radius; //this pervents the circle from disappearing
+  for(int xCurrent = radius; xCurrent >= 0;xCurrent--){
+    for(int yCurrent = radius; yCurrent >= 0;yCurrent--){
+      int squaredPositions = (xCurrent * xCurrent) + (yCurrent * yCurrent); //centered around (0,0)
+      if(squaredPositions < radius * radius && (radius - thickness) * (radius - thickness) <= squaredPositions){ //would do ^2 but this is faster
+        setPixel(xPosition + xCurrent, yPosition + yCurrent,on);  //mirroring around the x and y axis of the circle with offset
+        setPixel(xPosition - xCurrent, yPosition + yCurrent,on);
+        setPixel(xPosition + xCurrent, yPosition - yCurrent,on);
+        setPixel(xPosition - xCurrent, yPosition - yCurrent,on);
+      }
     }
   }
 }
@@ -435,7 +390,7 @@ void lcd::drawLine(int x1,int y1,int x2,int y2,bool on){
 		}
     for(int y = y1;y < y2+1;y++){
       setPixel(x1,y,on);
-    }  
+    }
   }else if(y1 == y2){
   	   if(x1>x2){
 			int t = x1;
@@ -517,7 +472,7 @@ void lcd::drawText(String text,bool big,bool on, bool wrap){
         ep++;
       }else{
       for(int i3 = 0;i3 < 6;i3++){
-        
+
         if (bitRead(tCode,7-i3) == 1){
           if(big){
             setPixel(x + lp * 2,y + i3 * 2,on);
@@ -534,7 +489,7 @@ void lcd::drawText(String text,bool big,bool on, bool wrap){
       if(ep == 2){
         ep = 0;
         lp-=2;
-        
+
       }
       if( ep ==1 && a == 4){
         ep = 0;
@@ -542,8 +497,8 @@ void lcd::drawText(String text,bool big,bool on, bool wrap){
         a = 100;
       }
     }
-  
-    lp++;   
+
+    lp++;
 
   }else{
     if(!big){
@@ -565,6 +520,3 @@ void lcd::drawText(String text,bool big,bool on, bool wrap){
    }
   cypos = y;
 }
-
-
-

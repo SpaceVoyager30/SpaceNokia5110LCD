@@ -4,32 +4,32 @@ v1.2
 [] around eg 'bool on' is optional
 
 all commands
-	lcd(int RSTs,int CEs,int DCs,[unsigned int]);
+	lcd(int RSTs, int CEs, int DCs, [unsigned int]);
 	void clearLcd();
 	void drawLcd();
-      	void LcdDo(char data,bool cmd);
-     	void setPixel(int x,int y,[bool on]);
-	bool getPixel(int x,int y);
-   	void drawRect(int x1,int y1,int x2,int y2,[bool fill],[bool on]);
-   	void drawCircle(int x1,int y1,int r,[bool fill],[bool on]);
-   	void drawLine(int x1,int y1,int x2,int y2,[bool on]);
-   	void drawBitmap(int x1,int y1,char bitm[],int arraysize,int sx,bool overl);
-   	void setCursorPos(int x,int y);
-  	void drawChar(char c,[bool big],[bool on]);
-   	void drawText(String text,[bool big],[bool on],[bool wrap]);
+      	void LcdDo(char data, bool cmd);
+     	void setPixel(int x, int y, [bool on]);
+	bool getPixel(int x, int y);
+   	void drawRect(int x1, int y1, int x2, int y2, [bool fill], [bool on]);
+   	void drawCircle(int x1, int y1, int r, [bool fill], [bool on]);
+   	void drawLine(int x1, int y1, int x2, int y2, [bool on]);
+   	void drawBitmap(int x1, int y1, char bitm[], int arraysize, int sx, bool overl);
+   	void setCursorPos(int x, int y);
+  	void drawChar(char c, [bool big], [bool on]);
+   	void drawText(String text, [bool big], [bool on], [bool wrap]);
 
 
 DIN go's to MOSI
 CLK go's to SCK
 
 start
-lcd (lcd var name) (reset pin(RST),chip selection pin(CE),data/commands selection(DC),[contrast default = 80])
+lcd (lcd var name) (reset pin(RST), chip selection pin(CE), data/commands selection(DC), [contrast default = 80])
 
-e.g. lcd Display(3,4,5);
+e.g. lcd Display(3, 4, 5);
 
 
 (lcd var name).clearLcd();
-clears  all pixels stored inside the arduino.dosen't clear lcd, to do that do "(lcd var name).clearLcd();" then "(lcd var name).drawLcd();"
+clears  all pixels stored inside the arduino.dosen't clear lcd,  to do that do "(lcd var name).clearLcd();" then "(lcd var name).drawLcd();"
 
 e.g. Display.clearLcd();
 
@@ -40,45 +40,47 @@ draws all pixels stored inside the arduino to the lcd. All other draw and set fu
 e.g. Display.drawLcd();
 
 
-(lcd var name).LcdDo(char data,bool command);
+(lcd var name).LcdDo(char data, bool command);
 set data or commands to the lcd. look at https://www.sparkfun.com/datasheets/LCD/Monochrome/Nokia5110.pdf for details
 
 
-(lcd var name).setPixel(int x,int y,[bool on default = true]);
-sets a pixel at (x,y) on or off
+(lcd var name).setPixel(int x, int y, [bool on default = true]);
+sets a pixel at (x, y) on or off
 
-e.g. Display.setPixel(10,10,true);
+e.g. Display.setPixel(10, 10, true);
 
 
-(lcd var name).getPixel(int x,int y);
+(lcd var name).getPixel(int x, int y);
 checks it a pixel is on
 
-e.g. bool pixel_on = Display.getPixel(10,10);
+e.g. bool pixel_on = Display.getPixel(10, 10);
 
 
-(lcd var name).drawLine(int x1,int y1,int x2,int y2,[bool on default = true]);
-draws a line between (x1,y1) and (x2,y2)
+(lcd var name).drawLine(int x1, int y1, int x2, int y2, [bool on default = true]);
+draws a line between (x1, y1) and (x2, y2)
 
-e.g. Display.drawLine(0,0,10,8);
-
-
-(lcd var name).drawRect(int x1,int y1,int x2,int y2,[bool fill default = true],[bool on default = true]);
-draws a rectangle from (x1,y1) to (x2,y2)
-
-e.g. Display.drawRect(5,5,10,15);
+e.g. Display.drawLine(0, 0, 10, 8);
 
 
-(lcd var name).drawCircle(int x1,int y1,int r,[bool fill default = true],[bool on default = true]);
-draw a circle for centre point (x1,y1) with radius(r)
+(lcd var name).drawRect(int x1, int y1, int x2, int y2, [bool fill default = true], [bool on default = true]);
+draws a rectangle from (x1, y1) to (x2, y2)
 
-e.g. Display.drawCircle(10,10,5);
+e.g. Display.drawRect(5, 5, 10, 15);
 
 
-(lcd var name).drawBitmap(int x1,int y1,char bitm[],int arraysize,int sx,bool overl);
-draws a an array of bits line by line at (x1,y1)
+(lcd var name).drawCircle(int xPosition, int yPosition, unsigned int radius, [unsigned int thickness default = -1], [bool on default = true]);
+draw a circle with a centre point at (xPosition, yPosition) with a set radius.
+optional thickness keeping the outside radius(-1 = fill).
+
+e.g. Display.drawCircle(10, 10, 5); will create a circle at (10, 10) with a radius of 5.
+		 Display.drawCircle(20, 30, 15, 2); will create a circle at (20, 30) with an outside radius of 15 that is 2 pixels thick.
+
+
+(lcd var name).drawBitmap(int x1, int y1, char bitm[], int arraysize, int sx, bool overl);
+draws a an array of bits line by line at (x1, y1)
 bitm[]: is the array of bytes
 arraysize: is the lenght of the array
-sx: is the width of the bit map(8,16,24,32,etc..)
+sx: is the width of the bit map(8, 16, 24, 32, etc..)
 overl: is over lap with off pixels  on:NO transparency  off:transparency
 
 char happy[] = {
@@ -87,27 +89,27 @@ B00000000,
 B10000001,
 B01111110};
 
-e.g. Display.drawBitmap((0,0,happy,4,8,false);
+e.g. Display.drawBitmap((0, 0, happy, 4, 8, false);
 
 
-(lcd var name).setCursorPos(int x,int y);
-set's cursor for text to (x,y)
+(lcd var name).setCursorPos(int x, int y);
+set's cursor for text to (x, y)
 
 
-(lcd var name).drawText(String text,[bool big default = false],[bool on default = true],[bool wrap default = true]);
+(lcd var name).drawText(String text, [bool big default = false], [bool on default = true], [bool wrap default = true]);
 draws text(default text is from 1x6 to 5x6).big just makes text x2 the size
 
-e.g. Display.drawText("Hello World",true,true);
+e.g. Display.drawText("Hello World", true, true);
 
 
-(lcd var name).drawChar(char c,[bool big default = false],[bool on default = true]);
+(lcd var name).drawChar(char c, [bool big default = false], [bool on default = true]);
 draw a specific char character apart from that it's the same as drawtext
 
 e.g. Display.drawChar(136);
 
 
 (lcd var name).fsin(int deg); and
-(lcd var name).fcos(int deg); are moded parts of Anon-Penguin's 
+(lcd var name).fcos(int deg); are moded parts of Anon-Penguin's
 SpeedTrig  https://github.com/Anon-Penguin/SpeedTrig
 thay are faster versions of sin/cos and make circles a bit faster to draw
 thay both return float from -1 to 1
@@ -131,7 +133,7 @@ character list
 41 ")"
 42 "*"
 43 "+"
-44 ","
+44 ", "
 45 "-"
 46 "."
 47 "/"
@@ -234,7 +236,7 @@ character list
 136 "pi"
 137 "divide symbol"
 138 superscript zero
-139 superscript one 
+139 superscript one
 140 superscript two
 141 superscript three
 142 superscript -zero
